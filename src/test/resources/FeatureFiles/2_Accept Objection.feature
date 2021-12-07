@@ -19,3 +19,5 @@ Feature: [SUC:12-02]-Accept Objection
     Then Save objection application
     Then Case status should be "Objection Awaiting Review"
 
+
+

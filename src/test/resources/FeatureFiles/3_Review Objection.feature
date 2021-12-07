@@ -19,3 +19,4 @@ Feature: [SUC:12-03]-Review Objection
     Then Enter Approval note
     Then Save objection application
     Then Case status should be "Objection Awaiting Finalization"
+

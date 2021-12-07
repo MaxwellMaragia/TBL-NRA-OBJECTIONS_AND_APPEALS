@@ -329,7 +329,7 @@ public class stepDefinitions extends BaseClass {
         search.clear();
         Thread.sleep(1000);
 
-        //search.sendKeys("*TSR/000000704");
+        //search.sendKeys("*OBJ/00000065/2021");
         search.sendKeys("*" + sharedatastep.ObjectionRefNumber);
         Thread.sleep(1000);
         search.sendKeys(Keys.ENTER);
@@ -358,6 +358,7 @@ public class stepDefinitions extends BaseClass {
     @And("^pick the case$")
     public void pick_the_case() throws Throwable {
         WebElement pickButton = sixty.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=' Pick ']")));
+        Thread.sleep(2000);
         Actions actions = new Actions(driver);
         actions.doubleClick(pickButton).perform();
     }
@@ -452,7 +453,7 @@ public class stepDefinitions extends BaseClass {
 
     @Then("Search for previous objection case")
     public void searchForPreviousObjectionCase() throws InterruptedException {
-        sharedatastep.ObjectionRefNumber = "OBJ/00000041/2021";
+//        sharedatastep.ObjectionRefNumber = "OBJ/00000041/2021";
         thirty.until(ExpectedConditions.visibilityOfElementLocated(By.id("SearchForm:caseNo"))).sendKeys(sharedatastep.ObjectionRefNumber);
         Thread.sleep(700);
         driver.findElement(By.id("SearchForm:j_idt40")).click();
@@ -460,7 +461,7 @@ public class stepDefinitions extends BaseClass {
 
     @Then("Submit Appeal application")
     public void submitAppealApplication() {
-        thirty.until(ExpectedConditions.visibilityOfElementLocated(By.id("LodgeAppeal:submitLodgeAppeal"))).click();
+        onehundred.until(ExpectedConditions.visibilityOfElementLocated(By.id("LodgeAppeal:submitLodgeAppeal"))).click();
     }
 
     @Then("Fill in appeal details with appeal amount {string}")
@@ -531,7 +532,8 @@ public class stepDefinitions extends BaseClass {
     public void enterFinalizationDecisionAndAmountDischargeAs(String amount) throws InterruptedException {
         Thread.sleep(3000);
         driver.findElement(By.id("header_process_tbg_appealfinalizationdecision")).click();
-        actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_UP).sendKeys(Keys.ENTER).perform();
+       // actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_UP).sendKeys(Keys.ENTER).perform();
+        actions.sendKeys(Keys.ARROW_UP).sendKeys(Keys.ARROW_UP).sendKeys(Keys.ENTER).perform();
 
         Thread.sleep(1000);
         driver.findElement(By.id("header_process_tbg_appealamountdischarge")).click();

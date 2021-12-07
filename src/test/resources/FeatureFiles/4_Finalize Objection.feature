@@ -18,3 +18,4 @@ Feature: [SUC:12-04]-Finalize Objection
     Then Select review results as decreased and amount discharged as "1200"
     Then Save objection application
     Then Case status should be "Objection Finalized"
+
