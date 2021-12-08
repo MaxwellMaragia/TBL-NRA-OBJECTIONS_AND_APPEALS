@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import gherkin.lexer.Th;
 import io.cucumber.java.DataTableType;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.math3.analysis.function.Exp;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Alert;
@@ -259,7 +260,7 @@ public class stepDefinitions extends BaseClass {
 
     @Then("Submit Objection Application")
     public void submitObjectionApplication() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         thirty.until(ExpectedConditions.visibilityOfElementLocated(By.id("LodgeObjection:lodgeObjectionSubmit"))).click();
     }
 
@@ -384,10 +385,17 @@ public class stepDefinitions extends BaseClass {
     @And("Select status as accepted for review")
     public void selectStatusAsAcceptedForReview() throws InterruptedException {
         Thread.sleep(3000);
-
         driver.findElement(By.id("header_process_tbg_ordreviewresults_c")).click();
         Actions action = new Actions(driver);
         action.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
+    }
+
+    @And("Select status as rejected for review")
+    public void selectStatusAsRejectedForReview() throws InterruptedException {
+        Thread.sleep(3000);
+        driver.findElement(By.id("header_process_tbg_ordreviewresults_c")).click();
+        Actions action = new Actions(driver);
+        action.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
     }
 
     @Then("Save objection application")
@@ -401,7 +409,7 @@ public class stepDefinitions extends BaseClass {
     public void caseStatusShouldBe(String status) throws InterruptedException {
         driver.switchTo().frame("contentIFrame1");
         Thread.sleep(3000);
-        String text = onehundred.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='" + status + "']"))).getText();
+        String text = twohundred.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='" + status + "']"))).getText();
         Assert.assertEquals(status, text);
         Thread.sleep(2000);
         driver.switchTo().defaultContent();
@@ -420,8 +428,8 @@ public class stepDefinitions extends BaseClass {
     @Then("Enter Approval note")
     public void enterApprovalNote() throws InterruptedException {
         Thread.sleep(1000);
-        driver.findElement(By.id("tbg_orrejectionnotes_d")).click();
-        actions.sendKeys("Approval notes : " + getRandom(6)).perform();
+        driver.findElement(By.id("tbg_ordrejectionnotes_i")).click();
+        actions.sendKeys("Rejection notes : " + getRandom(6)).perform();
     }
 
     @Then("Select review results as decreased and amount discharged as {string}")
@@ -467,7 +475,7 @@ public class stepDefinitions extends BaseClass {
     @Then("Fill in appeal details with appeal amount {string}")
     public void fillInAppealDetailsWithAppealAmount(String amount) throws InterruptedException {
         Thread.sleep(3000);
-        driver.findElement(By.id("LodgeAppeal:lodgeAppealAmount_input")).sendKeys(amount);
+        sixty.until(ExpectedConditions.visibilityOfElementLocated(By.id("LodgeAppeal:lodgeAppealAmount_input"))).sendKeys(amount);
         Thread.sleep(700);
         driver.findElement(By.id("LodgeAppeal:lodgeAppealReason")).sendKeys("Reason : " + getRandom(7));
         Thread.sleep(700);
@@ -753,6 +761,75 @@ public class stepDefinitions extends BaseClass {
     public void clickNextInAttachmentsScreen() {
         WebElement next = fourty.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"id_objection_application_form\"]/form-wizard/div/div/div[5]/div/div[3]/div/button[2]")));
         jse.executeScript("arguments[0].click()", next);
+    }
+
+    @When("User navigates to Objections and Appeals > Withdraw objection")
+    public void userNavigatesToObjectionsAndAppealsWithdrawObjection() {
+        twenty.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[span='Objections and Appeals']"))).click();
+        twenty.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[span='Withdraw Objection']"))).click();
+    }
+
+    @Then("Verify case number")
+    public void verifyCaseNumber() {
+        String current = seventy.until(ExpectedConditions.visibilityOfElementLocated(By.id("WithdrawObjection:withdrawObjectionCaseNo"))).getAttribute("value");
+        Assert.assertEquals(current,sharedatastep.ObjectionRefNumber);
+    }
+
+    @Then("Select reason for withdrawal as {string}")
+    public void selectReasonForWithdrawalAs(String arg0) throws InterruptedException {
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//*[@id=\"WithdrawObjection:WithdrawObjectionReason\"]/div[3]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//li[contains(text(),'" + arg0 + "')]")).click();
+        Thread.sleep(1000);
+    }
+
+    @Then("Submit objection withdrawal application")
+    public void submitObjectionWithdrawalApplication() {
+        driver.findElement(By.id("WithdrawObjection:WithdrawObjectionNoteSubmit")).click();
+    }
+
+    @When("User navigates to Objections and Appeals > Withdraw appeal")
+    public void userNavigatesToObjectionsAndAppealsWithdrawAppeal() {
+        twenty.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[span='Objections and Appeals']"))).click();
+        twenty.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[span='Withdraw Appeal']"))).click();
+    }
+
+    @Then("Verify case number for appeal")
+    public void verifyCaseNumberForAppeal() {
+        String current = seventy.until(ExpectedConditions.visibilityOfElementLocated(By.id("WithdrawAppeal:WithdrawAppealCaseNo"))).getAttribute("value");
+        Assert.assertEquals(current,sharedatastep.ObjectionRefNumber);
+    }
+
+    @Then("Select reason for appeal withdrawal as {string}")
+    public void selectReasonForAppealWithdrawalAs(String arg0) throws InterruptedException {
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//*[@id=\"WithdrawAppeal:WithdrawAppealReason\"]/div[3]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//li[contains(text(),'" + arg0 + "')]")).click();
+        Thread.sleep(1000);
+    }
+
+    @Then("Submit appeal withdrawal application")
+    public void submitAppealWithdrawalApplication() {
+        driver.findElement(By.id("WithdrawAppeal:WithdrawAppealSubmit")).click();
+    }
+
+
+    @Then("Enter Approval note and select reason")
+    public void enterApprovalNoteAndSelectReason() throws Throwable {
+        Thread.sleep(1000);
+        driver.findElement(By.id("tbg_ordrejectionnotes_i")).click();
+        actions.sendKeys("Rejection notes : " + getRandom(6)).perform();
+
+        switchToDefault();
+        switch_to_frame1();
+        WebElement reasonFrame = thirty.until(ExpectedConditions.visibilityOfElementLocated(By.id("WebResource_ObjectionAppealRejectionDataReferenceResource")));
+        driver.switchTo().frame(reasonFrame);
+        driver.findElement(By.id("viewoption")).click();
+        WebDriverWait ReasonValue = new WebDriverWait(driver, 60);
+        ReasonValue.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"viewoptionReject\"]/option[2]"))).click();
+        Thread.sleep(2000);
     }
 }
 
